@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ##Project Live Preview
-Open [https://intrapair_timer.netlify.app](https://intrapair_timer.netlify.app) to preview countdown timer.
+Open [https://intrapair-timer.netlify.app/](https://intrapair-timer.netlify.app/) to preview countdown timer.
 ## Available Scripts
 
 In the project directory, you can run:

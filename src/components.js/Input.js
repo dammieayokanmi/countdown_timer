@@ -24,7 +24,7 @@ const Input = ({ time, setTime }) => {
         name="inputTime"
         placeholder="Enter seconds"
         id="inputTime"
-        value={time}
+        value={String(time)}
         onChange={setTime}
       />
     </Wrapper>

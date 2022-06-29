@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 `
 
 const Timer = () => {
-  const [seconds, setSeconds] = useState(0)
+  const [timeInSeconds, setTimeInSeconds] = useState('')
   const [isActive, setIsActive] = useState(false)
   const [showButton, setShowButton] = useState(false)
 
@@ -23,52 +23,55 @@ const Timer = () => {
   }
 
   function resetTimer() {
-    setSeconds(0)
+    setTimeInSeconds('')
     setIsActive(false)
     setShowButton(false)
   }
 
   const getHours = () => {
-    return ('0' + Math.round(seconds / 3600)).slice(-2)
+    const hours = parseInt((timeInSeconds / 3600) % 24)
+    return String(hours).length === 1 ? `0${hours}` : hours
   }
 
   const getMinutes = () => {
-    return ('0' + Math.round((seconds % 3600) / 60)).slice(-2)
+    const minutes = parseInt((timeInSeconds / 60) % 60)
+    return String(minutes).length === 1 ? `0${minutes}` : minutes
   }
 
   const getSeconds = () => {
-    return ('0' + (seconds % 60)).slice(-2)
+    const second = parseInt(timeInSeconds % 60)
+    return String(second).length === 1 ? `0${second}` : second
   }
 
   const handleTimeChange = (e) => {
-    setSeconds(Number(e.target.value))
+    setTimeInSeconds(parseInt(e.target.value) || '')
   }
 
   useEffect(() => {
     let interval = null
     if (isActive) {
       interval = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds((seconds) => seconds - 1)
+        if (parseInt(timeInSeconds) > 0) {
+          setTimeInSeconds((timeInSeconds) => timeInSeconds - 1)
         }
       }, 1000)
-    } else if (!isActive && seconds !== 0) {
+    } else if (!isActive && parseInt(timeInSeconds) !== 0) {
       clearInterval(interval)
     }
 
     return () => clearInterval(interval)
-  }, [isActive, seconds])
+  }, [isActive, timeInSeconds])
 
   return (
     <Wrapper>
-      <Input time={seconds} setTime={handleTimeChange} />
+      <Input time={timeInSeconds} setTime={handleTimeChange} />
 
       <h1>
         {getHours()}:{getMinutes()}:{getSeconds()}
       </h1>
       <div className="row">
         {!showButton && (
-          <Button buttonText="Start" onClick={toggleStartButton} disabled={seconds === 0} />
+          <Button buttonText="Start" onClick={toggleStartButton} disabled={timeInSeconds === 0} />
         )}
 
         {showButton && (
@@ -76,11 +79,11 @@ const Timer = () => {
             buttonText={isActive ? 'Pause' : 'Resume'}
             onClick={toggle}
             isActive={isActive ? 'active' : 'inactive'}
-            disabled={seconds === 0}
+            disabled={timeInSeconds === 0}
           />
         )}
 
-        <Button buttonText="Reset" onClick={resetTimer} disabled={seconds === 0} />
+        <Button buttonText="Reset" onClick={resetTimer} disabled={timeInSeconds === 0} />
       </div>
     </Wrapper>
   )
